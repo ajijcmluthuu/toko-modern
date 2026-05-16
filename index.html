@@ -17,7 +17,7 @@
     .sidebar-header .logo{width:60px;height:60px;border-radius:16px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:28px;}
     .sidebar-header h2{font-size:16px;font-weight:600;} .sidebar-header small{opacity:0.8;font-size:12px;}
     .nav-menu{padding:12px 0;}
-    .nav-item{display:flex;align-items:center;padding:12px 20px;cursor:pointer;transition:all .2s;font-size:14px;font-weight:500;gap:12px;}
+    .nav-item{display:flex;align-items:center;padding:12px 20px;cursor:pointer;transition:all .2s;font-size:14px;font-weight:500;gap:12px;user-select:none;}
     .nav-item:hover{background:rgba(255,255,255,0.1);} .nav-item.active{background:rgba(255,255,255,0.2);border-right:3px solid white;}
     .nav-divider{height:1px;background:rgba(255,255,255,0.15);margin:8px 20px;}
     .main-content{margin-left:260px;min-height:100vh;}
@@ -91,13 +91,13 @@
   <div class="sidebar" id="sidebar">
     <div class="sidebar-header"><div class="logo">🏪</div><h2 id="storeNameSidebar">Toko Sejahtera</h2><small>Sistem Manajemen</small></div>
     <div class="nav-menu">
-      <div class="nav-item active" onclick="showPage('dashboard',this)"><span class="material-icons">dashboard</span> Dasbor</div>
-      <div class="nav-item" onclick="showPage('kasir',this)"><span class="material-icons">point_of_sale</span> Kasir</div>
-      <div class="nav-item" onclick="showPage('pesanan',this)"><span class="material-icons">shopping_bag</span> Pesanan Online</div>
+      <div class="nav-item active" data-page="dashboard"><span class="material-icons">dashboard</span> Dasbor</div>
+      <div class="nav-item" data-page="kasir"><span class="material-icons">point_of_sale</span> Kasir</div>
+      <div class="nav-item" data-page="pesanan"><span class="material-icons">shopping_bag</span> Pesanan Online</div>
       <div class="nav-divider"></div>
-      <div class="nav-item" onclick="showPage('gudang',this)"><span class="material-icons">inventory_2</span> Gudang</div>
-      <div class="nav-item" onclick="showPage('laporan',this)"><span class="material-icons">analytics</span> Laporan</div>      <div class="nav-divider"></div>
-      <div class="nav-item" onclick="showPage('pengaturan',this)"><span class="material-icons">settings</span> Pengaturan</div>
+      <div class="nav-item" data-page="gudang"><span class="material-icons">inventory_2</span> Gudang</div>
+      <div class="nav-item" data-page="laporan"><span class="material-icons">analytics</span> Laporan</div>      <div class="nav-divider"></div>
+      <div class="nav-item" data-page="pengaturan"><span class="material-icons">settings</span> Pengaturan</div>
     </div>
   </div>
   
@@ -107,7 +107,6 @@
       <div class="topbar-right"><span id="currentDate"></span></div>
     </div>
     <div class="page-content">
-      <!-- DASHBOARD -->
       <div class="page active" id="page-dashboard">
         <div class="stats-grid">
           <div class="stat-card"><div class="stat-icon blue"><span class="material-icons">inventory_2</span></div><div class="stat-info"><h4 id="statProduk">0</h4><p>Total Produk</p></div></div>
@@ -118,7 +117,6 @@
         <div class="card"><div class="card-header"><h3>🛍️ Katalog Produk</h3></div><div class="search-box"><span class="material-icons">search</span><input type="text" id="searchProdukDashboard" placeholder="Cari produk..." oninput="filterDashboardProduk()"></div><div class="product-grid" id="dashboardProdukGrid"><div class="loading"><div class="spinner"></div></div></div></div>
       </div>
       
-      <!-- KASIR -->
       <div class="page" id="page-kasir">
         <div class="kasir-layout" style="display:grid;grid-template-columns:1fr 380px;gap:20px;">
           <div><div class="card"><div class="card-header"><h3>Pilih Produk</h3></div><div style="display:flex;gap:8px;margin-bottom:20px;align-items:center;"><div class="search-box" style="flex:1;margin:0;"><span class="material-icons">search</span><input type="text" id="searchKasir" placeholder="Cari produk atau scan barcode..." oninput="filterKasirProduk()"></div><button class="btn scan-btn" onclick="startScanner('kasir')"><span class="material-icons">qr_code_scanner</span> Scan</button></div><div class="product-grid" id="kasirProdukGrid"><div class="loading"><div class="spinner"></div></div></div></div></div>
@@ -135,28 +133,23 @@
         </div>
       </div>
       
-      <!-- PESANAN ONLINE -->
       <div class="page" id="page-pesanan">
         <div class="card"><div class="card-header"><h3>📦 Pesanan Online</h3><button class="btn btn-outline" onclick="loadPesananOnline()"><span class="material-icons">refresh</span> Refresh</button></div><div id="pesananOnlineList"><div class="loading"><div class="spinner"></div></div></div></div>
       </div>
       
-      <!-- GUDANG -->
       <div class="page" id="page-gudang">
         <div class="card"><div class="card-header"><h3>📦 Manajemen Gudang</h3><button class="btn btn-primary" onclick="openModalProduk()"><span class="material-icons">add</span> Tambah Produk</button></div><div class="table-container"><table><thead><tr><th>Foto</th><th>ID</th><th>Barcode</th><th>Nama Produk</th><th>Kategori</th><th>Harga Jual</th><th>Stok</th><th>Aksi</th></tr></thead><tbody id="gudangTableBody"><tr><td colspan="8" class="loading"><div class="spinner"></div></td></tr></tbody></table></div></div>
       </div>
       
-      <!-- LAPORAN -->      <div class="page" id="page-laporan">
+      <div class="page" id="page-laporan">
         <div class="card"><div class="card-header"><h3>📊 Laporan Keuangan</h3><button class="btn btn-primary" onclick="downloadPDFLaporan()"><span class="material-icons">picture_as_pdf</span> Download PDF</button></div><div style="display:flex;gap:12px;align-items:flex-end;margin-bottom:20px;flex-wrap:wrap;"><div class="form-group" style="margin:0;"><label>Tanggal Mulai</label><input type="date" class="form-control" id="laporanMulai"></div><div class="form-group" style="margin:0;"><label>Tanggal Selesai</label><input type="date" class="form-control" id="laporanSelesai"></div><button class="btn btn-primary" onclick="generateLaporan()"><span class="material-icons">search</span> Tampilkan</button></div><div id="laporanContent"><div class="empty-state"><span class="material-icons">analytics</span><p>Pilih periode tanggal lalu klik "Tampilkan"</p></div></div></div>
       </div>
       
-      <!-- PENGATURAN -->
-      <div class="page" id="page-pengaturan">
-        <div class="card"><div class="card-header"><h3>⚙️ Pengaturan Toko</h3></div><div id="pengaturanForm"><div class="loading"><div class="spinner"></div></div></div></div>
+      <div class="page" id="page-pengaturan">        <div class="card"><div class="card-header"><h3>⚙️ Pengaturan Toko</h3></div><div id="pengaturanForm"><div class="loading"><div class="spinner"></div></div></div></div>
       </div>
     </div>
   </div>
   
-  <!-- MODALS -->
   <div class="modal-overlay" id="modalProduk">
     <div class="modal"><div class="modal-header"><h3 id="modalProdukTitle">Tambah Produk</h3><button class="modal-close" onclick="closeModal('modalProduk')">&times;</button></div><div class="modal-body">
       <input type="hidden" id="editProdukId">
@@ -194,17 +187,17 @@
   <div class="modal-overlay" id="modalReceipt">
     <div class="modal"><div class="modal-header"><h3>🧾 Struk Pembayaran</h3><button class="modal-close" onclick="closeModal('modalReceipt')">&times;</button></div><div class="modal-body" id="receiptContent"></div><div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modalReceipt')">Tutup</button><button class="btn btn-primary" onclick="printReceipt()"><span class="material-icons">print</span> Cetak</button></div></div>
   </div>
-    <div class="modal-overlay" id="modalQR">
+  
+  <div class="modal-overlay" id="modalQR">
     <div class="modal"><div class="modal-header"><h3>📱 QR Code Pembayaran</h3><button class="modal-close" onclick="closeModal('modalQR')">&times;</button></div><div class="modal-body"><div style="display:flex;flex-direction:column;align-items:center;padding:20px;"><h4 id="qrStoreName" style="margin-bottom:4px;"></h4><p id="qrStoreAddr" style="color:var(--text-secondary);font-size:13px;margin-bottom:12px;"></p><div id="qrcode" style="margin:16px 0;padding:16px;background:white;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,0.12);"></div><p id="qrAmount" style="font-size:20px;font-weight:700;color:var(--primary);margin-top:8px;"></p><p id="qrInfo" style="font-size:12px;color:var(--text-secondary);margin-top:8px;"></p></div></div><div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modalQR')">Tutup</button></div></div>
   </div>
   
   <div class="toast-container" id="toastContainer"></div>
   
-  <script>
+  <script>    // ==========================================
+    // KONFIGURASI
     // ==========================================
-    // KONFIGURASI - GANTI DENGAN URL ANDA
-    // ==========================================
-    const GAS_URL = 'https://https://script.google.com/macros/s/AKfycbzdAe0-Wy2QZomUjXU8JjVRMC98g4wX_7j7q80kAl6_2qDVYQ0PfdhUdS6RiCQvvgMp/exec';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbzdAe0-Wy2QZomUjXU8JjVRMC98g4wX_7j7q80kAl6_2qDVYQ0PfdhUdS6RiCQvvgMp/exec';
     
     // ==========================================
     // STATE
@@ -227,6 +220,8 @@
       var firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
       document.getElementById('laporanMulai').value = formatDateInput(firstDay);
       document.getElementById('laporanSelesai').value = formatDateInput(today);
+      
+      setupNavigation();
       loadData();
     });
     
@@ -235,20 +230,47 @@
     // ==========================================
     // NAVIGATION
     // ==========================================
-    function showPage(page, el) {
-      document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
-      document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
-      document.getElementById('page-' + page).classList.add('active');
-      if (el) el.classList.add('active');
+    function setupNavigation() {
+      var navItems = document.querySelectorAll('.nav-item');
+      navItems.forEach(function(item) {
+        item.addEventListener('click', function() {
+          var pageName = this.getAttribute('data-page');
+          showPage(pageName, this);
+        });
+      });
+    }
+    
+    function showPage(pageName, element) {
+      console.log('Navigasi ke:', pageName);
       
-      var titles = { dashboard:'Dasbor', kasir:'Kasir', pesanan:'Pesanan Online', gudang:'Gudang', laporan:'Laporan', pengaturan:'Pengaturan' };
-      document.getElementById('pageTitle').textContent = titles[page] || page;
-      document.getElementById('sidebar').classList.remove('open');      
-      if (page === 'kasir') renderKasirProduk();
-      if (page === 'dashboard') renderDashboardProduk();
-      if (page === 'gudang') renderGudangTable();
-      if (page === 'pesanan') loadPesananOnline();
-      if (page === 'pengaturan') renderPengaturan();
+      document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });      document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
+      
+      var targetPage = document.getElementById('page-' + pageName);
+      if (targetPage) {
+        targetPage.classList.add('active');
+      }
+      
+      if (element) {
+        element.classList.add('active');
+      }
+      
+      var titles = {
+        'dashboard': 'Dasbor',
+        'kasir': 'Kasir',
+        'pesanan': 'Pesanan Online',
+        'gudang': 'Gudang',
+        'laporan': 'Laporan Keuangan',
+        'pengaturan': 'Pengaturan'
+      };
+      document.getElementById('pageTitle').textContent = titles[pageName] || pageName;
+      
+      document.getElementById('sidebar').classList.remove('open');
+      
+      if (pageName === 'kasir') renderKasirProduk();
+      else if (pageName === 'dashboard') renderDashboardProduk();
+      else if (pageName === 'gudang') renderGudangTable();
+      else if (pageName === 'pesanan') loadPesananOnline();
+      else if (pageName === 'pengaturan') renderPengaturan();
     }
     
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
@@ -270,8 +292,7 @@
     }
     
     function formatRupiah(n) { return 'Rp ' + Number(n || 0).toLocaleString('id-ID'); }
-    function formatDate(d) { if (!d) return '-'; var date = new Date(d); return date.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }) + ' ' + date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }); }
-    function escapeHTML(str) { if (!str) return ''; return String(str).replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>'); }
+    function formatDate(d) { if (!d) return '-'; var date = new Date(d); return date.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }) + ' ' + date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }); }    function escapeHTML(str) { if (!str) return ''; return String(str).replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>'); }
     
     function apiCall(action, data, callback) {
       const formData = new FormData();
@@ -292,7 +313,8 @@
         });
     }
     
-    function apiGet(action, params, callback) {      let url = GAS_URL + '?action=' + action;
+    function apiGet(action, params, callback) {
+      let url = GAS_URL + '?action=' + action;
       if (params) {
         Object.keys(params).forEach(key => {
           url += '&' + key + '=' + encodeURIComponent(params[key]);
@@ -317,19 +339,13 @@
     // DATA LOADING
     // ==========================================
     function loadData() {
-      // Init database
       apiGet('init', {}, function() {});
       
-      // Load settings
-      apiGet('getPengaturan', {}, function(data) {
-        pengaturan = data || {};
+      apiGet('getPengaturan', {}, function(data) {        pengaturan = data || {};
         document.getElementById('storeNameSidebar').textContent = pengaturan['Nama Toko'] || 'Toko Sejahtera';
       });
       
-      // Load products
       loadProduk();
-      
-      // Load orders
       loadPesananOnline();
     }
     
@@ -341,7 +357,8 @@
       });
     }
     
-    // ==========================================    // DASHBOARD
+    // ==========================================
+    // DASHBOARD
     // ==========================================
     function renderDashboardProduk() {
       var grid = document.getElementById('dashboardProdukGrid');
@@ -373,8 +390,7 @@
       
       if (filtered.length === 0) { grid.innerHTML = '<div class="empty-state"><span class="material-icons">search_off</span><p>Tidak ada produk ditemukan</p></div>'; return; }
       
-      grid.innerHTML = filtered.map(function(p) {
-        var foto = p.URL_Foto ? '<img src="' + p.URL_Foto + '" onerror="this.outerHTML=\'\'">' : '📦';
+      grid.innerHTML = filtered.map(function(p) {        var foto = p.URL_Foto ? '<img src="' + p.URL_Foto + '" onerror="this.outerHTML=\'\'">' : '📦';
         return '<div class="product-card" onclick="tambahKeKeranjang(\'' + p.ID_Produk + '\')"><div class="product-img">' + foto + '</div><div class="product-body"><h4>' + escapeHTML(p.Nama_Produk) + '</h4><div class="category">' + escapeHTML(p.Kategori||'-') + '</div><div class="price">' + formatRupiah(p.Harga_Jual) + '</div><div class="stock">Stok: ' + p.Stok + '</div></div></div>';
       }).join('');
     }
@@ -390,7 +406,8 @@
         if (existing.jumlah < produk.Stok) existing.jumlah++; else { showToast('Stok tidak mencukupi!', 'error'); return; }
       } else { keranjang.push({ id: produk.ID_Produk, nama: produk.Nama_Produk, harga: produk.Harga_Jual, jumlah: 1, foto: produk.URL_Foto }); }
       
-      renderKeranjang();      showToast(produk.Nama_Produk + ' ditambahkan');
+      renderKeranjang();
+      showToast(produk.Nama_Produk + ' ditambahkan');
     }
     
     function hapusDariKeranjang(id) { keranjang = keranjang.filter(function(k) { return k.id !== id; }); renderKeranjang(); }
@@ -422,8 +439,7 @@
       var p = parseFloat(pengaturan['Pajak (%)']) || 0;
       var sub = keranjang.reduce(function(s,k){return s+(k.harga*k.jumlah);},0);
       var pajak = sub*(p/100);
-      document.getElementById('kasirSubtotal').textContent = formatRupiah(sub);
-      document.getElementById('kasirPajak').textContent = formatRupiah(pajak);
+      document.getElementById('kasirSubtotal').textContent = formatRupiah(sub);      document.getElementById('kasirPajak').textContent = formatRupiah(pajak);
       document.getElementById('kasirTotal').textContent = formatRupiah(sub+pajak);
     }
     
@@ -439,7 +455,8 @@
         items: keranjang,
         metodeBayar: document.getElementById('kasirMetode').value,
         kasir: 'Kasir'
-      };      
+      };
+      
       showToast('Memproses pembayaran...', 'info');
       
       apiCall('simpanTransaksi', trx, function(res) {
@@ -471,8 +488,7 @@
     function tampilkanQR(total, id) {
       document.getElementById('qrStoreName').textContent = pengaturan['Nama Toko']||'Toko';
       document.getElementById('qrStoreAddr').textContent = pengaturan['Alamat']||'';
-      document.getElementById('qrAmount').textContent = formatRupiah(total);
-      document.getElementById('qrInfo').textContent = (pengaturan['Rekening']||'') + ' | ' + (pengaturan['E-Wallet']||'');
+      document.getElementById('qrAmount').textContent = formatRupiah(total);      document.getElementById('qrInfo').textContent = (pengaturan['Rekening']||'') + ' | ' + (pengaturan['E-Wallet']||'');
       
       var qd = document.getElementById('qrcode'); qd.innerHTML = '';
       try { new QRCode(qd, { text:'ID:'+id+'|TOTAL:'+total, width:200, height:200, colorDark:'#000', colorLight:'#fff', correctLevel:QRCode.CorrectLevel.H }); } catch(e) {}
@@ -488,7 +504,8 @@
         pesananOnline = data || [];
         renderPesananOnline();
       });
-    }    
+    }
+    
     function renderPesananOnline() {
       var c = document.getElementById('pesananOnlineList');
       if (!pesananOnline || pesananOnline.length===0) { c.innerHTML='<div class="empty-state"><span class="material-icons">shopping_bag</span><p>Belum ada pesanan</p></div>'; return; }
@@ -520,8 +537,7 @@
     
     function editPesanan(id) {
       var p = pesananOnline.find(function(x){return x.ID_Pesanan===id;}); if(!p) return;
-      var body = document.getElementById('editPesananBody'); body.dataset.id=id;
-      var items = p.Item_JSON||[];
+      var body = document.getElementById('editPesananBody'); body.dataset.id=id;      var items = p.Item_JSON||[];
       
       body.innerHTML = '<p><strong>'+p.ID_Pesanan+'</strong></p><div id="editItems">'+items.map(function(it){return '<div style="display:flex;gap:8px;align-items:center;margin:8px 0;"><span style="flex:1">'+escapeHTML(it.nama)+'</span><input type="number" class="form-control" style="width:60px;" value="'+it.jumlah+'"></div>';}).join('')+'</div>' +
         '<div style="border-top:2px solid #dadce0;padding-top:8px;margin-top:12px;"><div class="receipt-row"><span>Subtotal</span><span>'+formatRupiah(p.Subtotal)+'</span></div><div class="receipt-row" style="font-weight:700;font-size:16px;"><span>Total</span><span style="color:var(--primary);">'+formatRupiah(p.Total)+'</span></div></div>';
@@ -537,7 +553,8 @@
         var nama = d.querySelector('span').textContent; var qty = parseInt(d.querySelector('input').value)||1;
         var produk = semuaProduk.find(function(x){return x.Nama_Produk===nama;});
         var harga = produk ? produk.Harga_Jual : 0;
-        items.push({nama:nama,jumlah:qty,harga:harga}); sub += harga*qty;      });
+        items.push({nama:nama,jumlah:qty,harga:harga}); sub += harga*qty;
+      });
       
       var pajak = sub*(p/100);
       var total = sub+pajak;
@@ -569,8 +586,7 @@
         return '<tr><td>'+foto+'</td><td><code style="font-size:11px;">'+p.ID_Produk+'</code></td><td>'+escapeHTML(p.Kode_Barcode||'-')+'</td><td><strong>'+escapeHTML(p.Nama_Produk)+'</strong></td><td>'+escapeHTML(p.Kategori||'-')+'</td><td>'+formatRupiah(p.Harga_Jual)+'</td><td><span class="badge '+(p.Stok<=5?'badge-danger':'badge-success')+'">'+p.Stok+'</span></td><td><button class="btn btn-sm btn-warning" onclick="editProduk(\''+p.ID_Produk+'\')"><span class="material-icons" style="font-size:16px;">edit</span></button> <button class="btn btn-sm btn-danger" onclick="hapusProduk(\''+p.ID_Produk+'\')"><span class="material-icons" style="font-size:16px;">delete</span></button></td></tr>';
       }).join('');
     }
-    
-    function openModalProduk() {
+        function openModalProduk() {
       document.getElementById('modalProdukTitle').textContent='Tambah Produk';
       document.getElementById('editProdukId').value='';
       ['produkBarcode','produkNama','produkKategori','produkHargaModal','produkHargaJual','produkStok','produkFoto','produkDeskripsi'].forEach(function(id){document.getElementById(id).value='';});
@@ -586,7 +602,8 @@
       document.getElementById('produkKategori').value=p.Kategori||'';
       document.getElementById('produkHargaModal').value=p.Harga_Modal;
       document.getElementById('produkHargaJual').value=p.Harga_Jual;
-      document.getElementById('produkStok').value=p.Stok;      document.getElementById('produkFoto').value=p.URL_Foto||'';
+      document.getElementById('produkStok').value=p.Stok;
+      document.getElementById('produkFoto').value=p.URL_Foto||'';
       document.getElementById('produkDeskripsi').value=p.Deskripsi||'';
       openModal('modalProduk');
     }
@@ -618,8 +635,7 @@
         apiCall('tambahProduk', data, function() {
           showToast('✅ Ditambahkan!');
           closeModal('modalProduk');
-          loadProduk();
-          renderGudangTable();
+          loadProduk();          renderGudangTable();
         });
       }
     }
@@ -635,7 +651,8 @@
     
     // ==========================================
     // LAPORAN
-    // ==========================================    function generateLaporan() {
+    // ==========================================
+    function generateLaporan() {
       var m = document.getElementById('laporanMulai').value, s = document.getElementById('laporanSelesai').value;
       if(!m||!s){showToast('Pilih tanggal!','error');return;}
       
@@ -667,8 +684,7 @@
         h+='<div class="card" style="margin-top:20px;"><h3 style="margin-bottom:12px;">🏆 Top 5 Terlaris</h3><table><thead><tr><th>#</th><th>Produk</th><th>Terjual</th></tr></thead><tbody>';
         sorted.forEach(function(p,i){
           h+='<tr><td>'+i+1+'</td><td>'+p.nama+'</td><td>'+p.jumlah+'</td></tr>';
-        });
-        h+='</tbody></table></div>';
+        });        h+='</tbody></table></div>';
       }
       
       document.getElementById('laporanContent').innerHTML=h;
@@ -684,7 +700,8 @@
       el.innerHTML='<h1 style="text-align:center;color:#4285f4;">'+(pengaturan['Nama Toko']||'Toko')+'</h1><p style="text-align:center;">Laporan Keuangan</p><hr><table style="width:100%;border-collapse:collapse;margin-top:16px;"><tr><td style="padding:10px;background:#f0f2f5;border:1px solid #ddd;"><strong>Transaksi</strong><br>'+r.jumlahTransaksi+'</td><td style="padding:10px;border:1px solid #ddd;"><strong>Pendapatan</strong><br>'+formatRupiah(r.totalPendapatan)+'</td><td style="padding:10px;border:1px solid #ddd;"><strong>Laba Kotor</strong><br>'+formatRupiah(r.labaKotor)+'</td></tr></table>';
       
       document.body.appendChild(el);
-      html2pdf().set({margin:10,filename:'Laporan_'+(new Date().toISOString().slice(0,10))+'.pdf',image:{type:'jpeg',quality:0.98},html2canvas:{scale:2},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}}).from(el).save().then(function(){        document.body.removeChild(el);
+      html2pdf().set({margin:10,filename:'Laporan_'+(new Date().toISOString().slice(0,10))+'.pdf',image:{type:'jpeg',quality:0.98},html2canvas:{scale:2},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}}).from(el).save().then(function(){
+        document.body.removeChild(el);
         showToast('✅ PDF berhasil didownload!');
       });
     }
@@ -716,8 +733,7 @@
       
       apiCall('simpanPengaturan', data, function() {
         showToast('Pengaturan berhasil disimpan!');
-        loadData();
-      });
+        loadData();      });
     }
     
     // ==========================================
@@ -733,7 +749,8 @@
       html5QrCode = new Html5Qrcode("qr-reader");
       const config = { fps: 10, qrbox: { width: 250, height: 150 }, aspectRatio: 1.0, disableFlip: false };
       
-      html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess, function() {})        .then(function() {
+      html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess, function() {})
+        .then(function() {
           scanActive = true;
           document.getElementById('scanStatus').innerHTML = '<span style="color:var(--secondary)">✅ Kamera aktif. Arahkan ke barcode/QR</span><br><small style="color:var(--text-secondary)">Pastikan cahaya cukup dan barcode jelas</small>';
         })
@@ -765,8 +782,7 @@
     }
     
     function cariDanTambahProduk(barcode) {
-      var produk = semuaProduk.find(function(p) { return (p.Kode_Barcode && p.Kode_Barcode.toString().trim() === barcode) || p.ID_Produk === barcode; });
-      
+      var produk = semuaProduk.find(function(p) { return (p.Kode_Barcode && p.Kode_Barcode.toString().trim() === barcode) || p.ID_Produk === barcode; });      
       if (produk) {
         if (produk.Stok <= 0) { showToast('⚠️ Stok "' + produk.Nama_Produk + '" habis!', 'error'); return; }
         tambahKeKeranjang(produk.ID_Produk);
@@ -782,7 +798,8 @@
     
     function playBeepSound() {
       try { var ctx = new (window.AudioContext || window.webkitAudioContext)(); var osc = ctx.createOscillator(); var gain = ctx.createGain(); osc.connect(gain); gain.connect(ctx.destination); osc.frequency.value = 1000; osc.type = 'sine'; gain.gain.setValueAtTime(0.3, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15); osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.15); } catch(e) {}
-    }    
+    }
+    
     function showManualInput() { document.getElementById('manualInputSection').style.display = 'block'; document.getElementById('manualBarcodeInput').focus(); }
     
     function submitManualBarcode() {
